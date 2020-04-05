@@ -1,6 +1,7 @@
 package services
 
 import (
+	"go-hls-stream-player/Models"
 	"go-hls-stream-player/grpc_client"
 	pbTimeshift "go-hls-stream-player/proto/timeshift_service"
 	"strconv"
@@ -10,6 +11,19 @@ import (
 type PlaylistService struct {
 	timeShiftClient *grpc_client.TimeShiftClient
 }
+
+func (playlistService *PlaylistService) GenerateMasterMediaPlaylist(mediaId int) (string, error) {
+	stream := []string{
+		"#EXTM3U",
+		"#EXT-X-VERSION:3",
+		"#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080",
+	}
+
+	stream = append(stream, Models.GetEnvStruct().Url + "v1/vod/" + strconv.Itoa(mediaId) + "/1080p.m3u8")
+
+	return strings.Join(stream, "\n"), nil
+}
+
 
 func (playlistService *PlaylistService) GenerateMediaPlaylist(mediaId int32) (string, error)  {
 	stream := []string{

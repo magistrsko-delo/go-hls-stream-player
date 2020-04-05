@@ -12,5 +12,6 @@ type PlaylistRouter struct {
 
 func (playlistRouter *PlaylistRouter) RegisterHandlers()  {
 	controller :=  &controllers.PlaylistController{PlayListService: services.InitPlaylistService()}
-	(*playlistRouter).Router.HandleFunc("/vod/{mediaId}/index.m3u8", controller.GetPlaylistMedia).Methods("GET")
+	(*playlistRouter).Router.HandleFunc("/vod/{mediaId}/master.m3u8", controller.GetMasterPlaylist).Methods("GET")
+	(*playlistRouter).Router.HandleFunc("/vod/{mediaId}/1080p.m3u8", controller.Get1080pPlaylistMedia).Methods("GET")
 }
