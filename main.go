@@ -2,14 +2,19 @@ package main
 
 import (
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 	"github.com/rs/cors"
+	"go-hls-stream-player/Models"
 	"go-hls-stream-player/router"
 	"log"
 	"net/http"
 )
 
 func init()  {
-	
+	if err := godotenv.Load(); err != nil {
+		log.Print("No .env file found")
+	}
+	Models.InitEnv()
 }
 
 func main()  {
