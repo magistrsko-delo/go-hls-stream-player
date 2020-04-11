@@ -31,6 +31,7 @@ func (playlistService *PlaylistService) GenerateMediaPlaylist(mediaId int32) (st
 		"#EXT-X-VERSION:3",
 		"#EXT-X-MEDIA-SEQUENCE:0",
 		"#EXT-X-TARGETDURATION:5",
+		"#EXT-X-PLAYLIST-TYPE:VOD",
 	}
 
 	vods, err := playlistService.get1080pMediaStream(mediaId)
@@ -65,9 +66,9 @@ func (playlistService *PlaylistService) get1080pMediaStream(mediaId int32) ([]st
 	vod1800p := [] string{}
 
 	for i := 0; i < len(chunksData); i++ {
+		vod1800p = append(vod1800p, "#EXT-X-DISCONTINUITY")
 		vod1800p = append(vod1800p, "#EXTINF:" + strconv.FormatFloat(chunksData[i].GetLength(), 'f', 6, 64)  + ",")
 		vod1800p = append(vod1800p, chunksData[i].GetChunksUrl())
-		vod1800p = append(vod1800p, "EXT-X-DISCONTINUITY")
 	}
 
 	return vod1800p, nil
