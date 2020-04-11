@@ -30,7 +30,7 @@ func (playlistService *PlaylistService) GenerateMediaPlaylist(mediaId int32) (st
 		"#EXTM3U",
 		"#EXT-X-VERSION:3",
 		"#EXT-X-MEDIA-SEQUENCE:0",
-		"#EXT-X-TARGETDURATION:6",
+		"#EXT-X-TARGETDURATION:5",
 	}
 
 	vods, err := playlistService.get1080pMediaStream(mediaId)
