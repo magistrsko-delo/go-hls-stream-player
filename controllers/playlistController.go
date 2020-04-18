@@ -39,7 +39,7 @@ func (playlistController *PlaylistController) Get1080pPlaylistMedia(w http.Respo
 		return
 	}
 
-	playlist, err := playlistController.PlayListService.GenerateMediaPlaylist(int32(mediaId))
+	playlist, err := playlistController.PlayListService.GenerateMediaPlaylist1080p(int32(mediaId))
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -49,3 +49,23 @@ func (playlistController *PlaylistController) Get1080pPlaylistMedia(w http.Respo
 	w.Header().Set("Content-Type", "application/x-mpegURL")
 	w.Write([]byte(playlist))
 }
+
+func (playlistController *PlaylistController) GetSequencePlaylist(w http.ResponseWriter, r *http.Request)  {
+	params := mux.Vars(r)
+	sequenceId, err := strconv.Atoi(params["sequenceId"])
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	playlist, err := playlistController.PlayListService.GenerateSequencePlaylist(int32(sequenceId))
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/x-mpegURL")
+	w.Write([]byte(playlist))
+}
+

@@ -26,6 +26,18 @@ func (timeShiftClient *TimeShiftClient) GetMediaChunkInfo(mediaId int32) (*pbTim
 	return response, nil
 }
 
+func (timeShiftClient *TimeShiftClient) GetSequenceChunkInfo(sequenceId int32) (*pbTimeshift.TimeShiftSequenceResponse, error)  {
+	response, err := timeShiftClient.client.GetSequenceChunkInformation(context.Background(), &pbTimeshift.TimeShiftSequenceRequest{
+		SequenceId:           sequenceId,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
 
 func InitTimeShiftClient() *TimeShiftClient  {
 	env := Models.GetEnvStruct()
