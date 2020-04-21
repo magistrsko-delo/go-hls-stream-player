@@ -18,9 +18,12 @@ func (playlistService *PlaylistService) GenerateMasterMediaPlaylist(mediaId int)
 	stream := []string{
 		"#EXTM3U",
 		"#EXT-X-VERSION:3",
-		"#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080",
 	}
 
+	stream = append(stream, "#EXT-X-STREAM-INF:BANDWIDTH=1400000,RESOLUTION=842x480")
+	stream = append(stream, Models.GetEnvStruct().Url + "v1/vod/" + strconv.Itoa(mediaId) + "/480p.m3u8")
+
+	stream = append(stream, "#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080")
 	stream = append(stream, Models.GetEnvStruct().Url + "v1/vod/" + strconv.Itoa(mediaId) + "/1080p.m3u8")
 
 	return strings.Join(stream, "\n"), nil
@@ -44,6 +47,24 @@ func (playlistService *PlaylistService) GenerateMediaPlaylist1080p(mediaId int32
 	return strings.Join(stream, "\n"), nil
 }
 
+func (playlistService *PlaylistService) GenerateMediaPlaylist1480p(mediaId int32) (string, error)  {
+	stream := playlistService.streamPlayListInit
+
+	rsp, err := playlistService.timeShiftClient.GetMediaChunkInfo(mediaId)
+
+	if err != nil {
+		return "", err
+	}
+	chunksData := playlistService.getChunksResolutionData("842x480", rsp.GetData())
+	vods := playlistService.generateChunksPlaylistDataFromMetadata(chunksData)
+
+	stream = append(stream, vods...)
+	stream = append(stream, "#EXT-X-ENDLIST")
+
+	return strings.Join(stream, "\n"), nil
+}
+
+/// SEQUENCE PLAYLIST... ONLY ONE RESOLUTION...
 func (playlistService *PlaylistService) GenerateSequencePlaylist(sequenceId int32) (string, error)  {
 	stream := playlistService.streamPlayListInit
 
