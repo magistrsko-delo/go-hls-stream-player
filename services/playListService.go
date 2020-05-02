@@ -20,10 +20,10 @@ func (playlistService *PlaylistService) GenerateMasterMediaPlaylist(mediaId int)
 		"#EXT-X-VERSION:3",
 	}
 
-	stream = append(stream, "#EXT-X-STREAM-INF:BANDWIDTH=1400000,RESOLUTION=842x480")
+	stream = append(stream, "#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1400000,CODECS=\"mp4a.40.2\",RESOLUTION=842x480,NAME=\"480p\"")
 	stream = append(stream, Models.GetEnvStruct().Url + "v1/vod/" + strconv.Itoa(mediaId) + "/480p.m3u8")
 
-	stream = append(stream, "#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080")
+	stream = append(stream, "#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=5000000,CODECS=\"mp4a.40.2\",RESOLUTION=1920x1080,NAME=\"1080p\"")
 	stream = append(stream, Models.GetEnvStruct().Url + "v1/vod/" + strconv.Itoa(mediaId) + "/1080p.m3u8")
 
 	return strings.Join(stream, "\n"), nil
