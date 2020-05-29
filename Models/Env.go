@@ -13,6 +13,7 @@ type Env struct {
 	TimeShiftGrpcServer string
 	TimeShiftGrpcPort string
 	Env string
+	TracingConnection string
 }
 
 func InitEnv()  {
@@ -22,6 +23,7 @@ func InitEnv()  {
 		Url:						os.Getenv("URL"),
 		TimeShiftGrpcServer:		os.Getenv("TIMESHIFT_GRPC_SERVER"),
 		TimeShiftGrpcPort:			os.Getenv("TIMESHIFT_GRPC_PORT"),
+		TracingConnection: 			os.Getenv("TRACING_CONNECTION"),
 	}
 	fmt.Println(envStruct)
 }
