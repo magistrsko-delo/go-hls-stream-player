@@ -28,9 +28,9 @@ func init()  {
 }
 
 func main()  {
-
+	env := Models.GetEnvStruct()
 	health := healthcheck.NewHandler()
-
+	health.AddLivenessCheck("timeshift: " + env.TimeShiftGrpcServer + ":" + env.TimeShiftGrpcPort, healthcheck.TCPDialCheck(env.TimeShiftGrpcServer + ":" + env.TimeShiftGrpcPort, 5*time.Second))
 	zipkinPropagator := zipkin.NewZipkinB3HTTPHeaderPropagator()
 	injector := jaeger.TracerOptions.Injector(opentracing.HTTPHeaders, zipkinPropagator)
 	extractor := jaeger.TracerOptions.Extractor(opentracing.HTTPHeaders, zipkinPropagator)
